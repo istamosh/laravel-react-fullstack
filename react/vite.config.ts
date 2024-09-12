@@ -7,7 +7,7 @@ export default defineConfig({
   // link outer sail project with this vite after npm run dev
   server: {
     host: '0.0.0.0',
-    port: 5173,
+    port: 3000,
     hmr: {
       host: 'localhost',
     }
