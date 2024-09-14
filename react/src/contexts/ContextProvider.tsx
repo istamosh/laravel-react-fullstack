@@ -7,15 +7,18 @@ import {
     useState,
 } from "react";
 
+interface User {
+    name: string;
+}
 interface StateContextType {
-    user: object;
+    user: User;
     token: string | null;
-    setUser: Dispatch<SetStateAction<object>>;
+    setUser: Dispatch<SetStateAction<User>>;
     setToken: (token: string | null) => void;
 }
 
 const StateContext = createContext<StateContextType>({
-    user: {},
+    user: { name: "Test User" },
     token: null,
     setUser: () => {}, // initialize function
     setToken: () => {},
@@ -26,10 +29,12 @@ interface ContextProviderProps {
 }
 
 export const ContextProvider = ({ children }: ContextProviderProps) => {
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState({
+        name: "Test User",
+    });
     // const [token, _setToken] = useState(localStorage.getItem("ACCESS_TOKEN"));
-    // temporary token for testing
-    const [token, _setToken] = useState<string | null>("123");
+    // const [token, _setToken] = useState<string | null>("123");
+    const [token, _setToken] = useState<string | null>(null);
 
     const setToken = (token: string | null) => {
         _setToken(token);

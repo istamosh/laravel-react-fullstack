@@ -1,7 +1,25 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Login: React.FC = () => {
-    return <div>Login Page</div>;
+    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+    };
+
+    return (
+        <>
+            <form action="" onSubmit={onSubmit}>
+                <h1 className="title">Login into your account</h1>
+                <input type="email" placeholder="Email" />
+                <input type="password" placeholder="Password" />
+                <button className="btn btn-block">Login</button>
+                <p className="message">
+                    Not registered?{" "}
+                    <Link to="/register">Create an account</Link>
+                </p>
+            </form>
+        </>
+    );
 };
 
 export default Login;

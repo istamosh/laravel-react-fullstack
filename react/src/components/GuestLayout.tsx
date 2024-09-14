@@ -11,10 +11,11 @@ const GuestLayout: React.FC = () => {
 
     return (
         <div>
-            <h1>Welcome, Guest!</h1>
-
-            {/* renders the child routes */}
-            <Outlet />
+            <div className="login-signup-form animated fadeInDown">
+                <div className="form">
+                    <Outlet />
+                </div>
+            </div>
         </div>
     );
 };
