@@ -18,7 +18,7 @@ interface StateContextType {
 }
 
 const StateContext = createContext<StateContextType>({
-    user: { name: "Test User" },
+    user: { name: "" },
     token: null,
     setUser: () => {}, // initialize function
     setToken: () => {},
