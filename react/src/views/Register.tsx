@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import axiosClient from "../axios-client";
 import { useStateContext } from "../contexts/ContextProvider";
@@ -9,13 +9,12 @@ const Register = () => {
     const passwordRef = useRef<HTMLInputElement>();
     const passwordConfirmationRef = useRef<HTMLInputElement>();
 
+    const [errors, setErrors] = useState(null);
     // when you press CTRL+SPACE the state context will show
     // from ContextProvider
     const { setUser, setToken } = useStateContext();
 
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        // debugger;
-
         e.preventDefault();
         const payload = {
             name: nameRef.current ? nameRef.current.value : "",
@@ -35,10 +34,9 @@ const Register = () => {
                 setToken(data.token);
             })
             .catch((err) => {
-                // console.log(err);
                 const response = err.response;
                 if (response && response.status === 422) {
-                    console.log(response.data.errors);
+                    setErrors(response.data.errors);
                 }
             });
     };
@@ -47,6 +45,16 @@ const Register = () => {
         <>
             <form action="" onSubmit={onSubmit}>
                 <h1 className="title">Register new account</h1>
+
+                {/* display errors */}
+                {errors && (
+                    <div className="alert">
+                        {Object.keys(errors).map((key) => (
+                            <p key={key}>{errors[key][0]}</p>
+                        ))}
+                    </div>
+                )}
+
                 <input
                     ref={nameRef as React.RefObject<HTMLInputElement>}
                     placeholder="Full Name"

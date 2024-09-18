@@ -22,6 +22,8 @@ class AuthController extends Controller
             'password' => bcrypt($data['password']),
         ]);
 
+        // createToken is available after install Sanctum and
+        // and configuring User model and adding HasApiTokens trait
         $token = $user->createToken('authToken')->plainTextToken;
 
         return response(compact('user', 'token'));
@@ -43,7 +45,10 @@ class AuthController extends Controller
     {
         /** @var User $user */
         $user = $request->user();
-        $user->currentAccessToken()->delete();
+        $accessToken = $user->currentAccessToken();
+        if ($accessToken) {
+            $user->deleteToken($accessToken);
+        }
         return response('', 204);
     }
 }

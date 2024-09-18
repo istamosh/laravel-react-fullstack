@@ -18,20 +18,14 @@ axiosClient.interceptors.request.use((config: InternalAxiosRequestConfig) => {
 
 // response interceptors
 axiosClient.interceptors.response.use(
-    (response: AxiosResponse) => {
-        return response.data;
-    },
+    (response: AxiosResponse) => response,
     (error: AxiosError) => {
-        try {
-            const { response } = error;
-            // check if response is exist first before get status
-            if (response && response.status === 401) {
-                localStorage.removeItem("ACCESS_TOKEN");
-            }
-            throw error;
-        } catch (e) {
-            console.error(e);
+        const { response } = error;
+        // check if response is exist first before get status
+        if (response && response.status === 401) {
+            localStorage.removeItem("ACCESS_TOKEN");
         }
+        throw error;
     }
 );
 
