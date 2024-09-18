@@ -22,12 +22,16 @@ axiosClient.interceptors.response.use(
         return response.data;
     },
     (error: AxiosError) => {
-        const { response } = error;
-        // check if response is exist first before get status
-        if (response && response.status === 401) {
-            localStorage.removeItem("ACCESS_TOKEN");
+        try {
+            const { response } = error;
+            // check if response is exist first before get status
+            if (response && response.status === 401) {
+                localStorage.removeItem("ACCESS_TOKEN");
+            }
+            throw error;
+        } catch (e) {
+            console.error(e);
         }
-        throw error;
     }
 );
 
