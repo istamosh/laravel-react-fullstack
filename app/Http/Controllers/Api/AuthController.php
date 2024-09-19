@@ -32,9 +32,11 @@ class AuthController extends Controller
     {
         $credentials = $request->validated();
         if (!Auth::attempt($credentials)) {
+            // in reality it returns 200 but alter it to 422
+            // to match the Login's SetErrors handler
             return response([
                 'message' => 'Provided credentials are not correct.',
-            ]);
+            ], 422);
         }
         /** @var User $user */
         $user = Auth::user();

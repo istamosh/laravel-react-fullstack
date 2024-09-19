@@ -3,11 +3,16 @@ import { Link } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import axiosClient from "../axios-client";
 
+interface Errors {
+    // flexible props and its string type defining the string array
+    [key: string]: string[];
+}
+
 const Login: React.FC = () => {
     const emailRef = useRef<HTMLInputElement>();
     const passwordRef = useRef<HTMLInputElement>();
 
-    const [errors, setErrors] = useState(null);
+    const [errors, setErrors] = useState<Errors | null>(null);
     // when you press CTRL+SPACE the state context will show
     // from ContextProvider
     const { setUser, setToken } = useStateContext();
@@ -18,6 +23,9 @@ const Login: React.FC = () => {
             email: emailRef.current ? emailRef.current.value : "",
             password: passwordRef.current ? passwordRef.current.value : "",
         };
+
+        // clearing the error message first before showing another one
+        setErrors(null);
 
         console.log(payload);
         // get { data } response from AuthController
@@ -31,7 +39,11 @@ const Login: React.FC = () => {
                 console.log(err);
                 const response = err.response;
                 if (response && response.status === 422) {
-                    setErrors(response.data.errors);
+                    response.data.errors
+                        ? setErrors(response.data.errors)
+                        : setErrors({
+                              email: [response.data.message],
+                          });
                 }
             });
     };

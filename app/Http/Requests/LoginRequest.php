@@ -23,7 +23,7 @@ class LoginRequest extends FormRequest
     {
         return [
             // an email must be exists in the users table and email column
-            'email' => ['required', 'string', 'email', 'exists:users,email'],
+            'email' => ['required', 'email', 'exists:users,email'],
             'password' => ['required'],
         ];
     }

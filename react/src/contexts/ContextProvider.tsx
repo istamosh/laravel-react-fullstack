@@ -32,9 +32,11 @@ export const ContextProvider = ({ children }: ContextProviderProps) => {
     const [user, setUser] = useState({
         name: "Test User",
     });
-    // const [token, _setToken] = useState(localStorage.getItem("ACCESS_TOKEN"));
+
+    // this will save localStorage for keeping the user session
+    const [token, _setToken] = useState(localStorage.getItem("ACCESS_TOKEN"));
     // const [token, _setToken] = useState<string | null>("123");
-    const [token, _setToken] = useState<string | null>(null);
+    // const [token, _setToken] = useState<string | null>(null);
 
     const setToken = (token: string | null) => {
         _setToken(token);
