@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, Navigate, Outlet } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
+import axiosClient from "../axios-client";
 
 const DefaultLayout: React.FC = () => {
-    const { user, token } = useStateContext();
+    const { user, token, setUser, setToken } = useStateContext();
 
     if (!token) {
         return <Navigate to="/login" />;
@@ -13,7 +14,21 @@ const DefaultLayout: React.FC = () => {
         e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>
     ) => {
         e.preventDefault();
+
+        // trigger backend logout request and clear the user and token
+        axiosClient.post("/logout").then(() => {
+            setUser({});
+            setToken(null);
+        });
     };
+
+    // add useEffect that using axiosClient to get user data
+    // then dispatch setUser
+    useEffect(() => {
+        axiosClient.get("/user").then(({ data }) => {
+            setUser(data);
+        });
+    }, []);
 
     return (
         <div id="defaultLayout">
