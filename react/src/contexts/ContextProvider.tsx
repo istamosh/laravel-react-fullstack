@@ -11,14 +11,15 @@ interface User {
     name: string;
 }
 interface StateContextType {
-    user: User;
+    // optional user property
+    user: Partial<User>;
     token: string | null;
-    setUser: Dispatch<SetStateAction<User>>;
+    setUser: Dispatch<SetStateAction<Partial<User>>>;
     setToken: (token: string | null) => void;
 }
 
 const StateContext = createContext<StateContextType>({
-    user: { name: "" },
+    user: {},
     token: null,
     setUser: () => {}, // initialize function
     setToken: () => {},
@@ -29,12 +30,12 @@ interface ContextProviderProps {
 }
 
 export const ContextProvider = ({ children }: ContextProviderProps) => {
-    const [user, setUser] = useState({
-        name: "Test User",
-    });
+    const [user, setUser] = useState<Partial<User>>({});
 
     // this will save localStorage for keeping the user session
-    const [token, _setToken] = useState(localStorage.getItem("ACCESS_TOKEN"));
+    const [token, _setToken] = useState<string | null>(
+        localStorage.getItem("ACCESS_TOKEN")
+    );
     // const [token, _setToken] = useState<string | null>("123");
     // const [token, _setToken] = useState<string | null>(null);
 
