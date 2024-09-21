@@ -4,7 +4,7 @@ import { useStateContext } from "../contexts/ContextProvider";
 import axiosClient from "../axios-client";
 
 const DefaultLayout: React.FC = () => {
-    const { user, token, setUser, setToken } = useStateContext();
+    const { user, token, notification, setUser, setToken } = useStateContext();
 
     if (!token) {
         return <Navigate to="/login" />;
@@ -37,8 +37,12 @@ const DefaultLayout: React.FC = () => {
                 <Link to="/users">Users</Link>
             </aside>
             <div className="content">
+                {notification && (
+                    <div className="notification">{notification}</div>
+                )}
+
                 <header>
-                    <div>Header</div>
+                    <h2>Management Dashboard</h2>
                     <div>
                         {user.name}
                         <a href="#" className="btn-logout" onClick={onLogout}>

@@ -73,7 +73,7 @@ const Login: React.FC = () => {
                 <button className="btn btn-block">Login</button>
                 <p className="message">
                     Not registered?{" "}
-                    <Link to="/register">Create an account</Link>
+                    <Link to="/register">Create an account.</Link>
                 </p>
             </form>
         </>

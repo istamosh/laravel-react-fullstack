@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axiosClient from "../axios-client";
 import { Link } from "react-router-dom";
+import { useStateContext } from "../contexts/ContextProvider";
 
 interface User {
     id: number;
@@ -12,6 +13,7 @@ interface User {
 const Users: React.FC = () => {
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(false);
+    const { setNotification } = useStateContext();
 
     // componentDidMount
     useEffect(() => {
@@ -33,12 +35,12 @@ const Users: React.FC = () => {
             });
     };
 
-    const onDelete = (id: number) => {
+    const onDelete = (user: User) => {
         if (!window.confirm("Are you sure you want to delete this user?")) {
             return;
         }
-        axiosClient.delete(`/users/${id}`).then(() => {
-            //TODO: show notification
+        axiosClient.delete(`/users/${user.id}`).then(() => {
+            setNotification(`User ${user.name} deleted successfully.`);
 
             // display the users back
             getUsers();
@@ -95,7 +97,7 @@ const Users: React.FC = () => {
                                         </Link>
                                         &nbsp;
                                         <button
-                                            onClick={() => onDelete(user.id)}
+                                            onClick={() => onDelete(user)}
                                             className="btn-delete"
                                         >
                                             Delete

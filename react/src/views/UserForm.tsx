@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axiosClient from "../axios-client";
+import { useStateContext } from "../contexts/ContextProvider";
 
 interface User {
     id: number | null;
@@ -15,6 +16,7 @@ const UserForm: React.FC = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState(null);
+    const { setNotification } = useStateContext();
     const [user, setUser] = useState<User>({
         id: null,
         name: "",
@@ -30,7 +32,6 @@ const UserForm: React.FC = () => {
                 .get(`/users/${id}`)
                 .then(({ data }) => {
                     setLoading(false);
-                    debugger;
                     setUser(data);
                 })
                 .catch(() => {
@@ -41,11 +42,27 @@ const UserForm: React.FC = () => {
 
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
         if (user.id) {
             axiosClient
                 .put(`/users/${user.id}`, user)
                 .then(() => {
-                    //TODO show notification
+                    setNotification("User updated successfully.");
+
+                    // redirect to users page
+                    navigate("/users");
+                })
+                .catch((err) => {
+                    const response = err.response;
+                    if (response && response.status === 422) {
+                        setErrors(response.data.errors);
+                    }
+                });
+        } else {
+            axiosClient
+                .post(`/users`, user)
+                .then(() => {
+                    setNotification("User created successfully.");
 
                     // redirect to users page
                     navigate("/users");
@@ -81,6 +98,7 @@ const UserForm: React.FC = () => {
                 ) : (
                     <form action="" onSubmit={onSubmit}>
                         <input
+                            type="text"
                             onChange={(e) =>
                                 setUser({ ...user, name: e.target.value })
                             }
@@ -88,6 +106,7 @@ const UserForm: React.FC = () => {
                             placeholder="Name"
                         />
                         <input
+                            type="email"
                             onChange={(e) =>
                                 setUser({ ...user, email: e.target.value })
                             }
@@ -95,19 +114,21 @@ const UserForm: React.FC = () => {
                             placeholder="Email"
                         />
                         <input
+                            type="password"
                             onChange={(e) =>
                                 setUser({ ...user, password: e.target.value })
                             }
                             placeholder="Password"
                         />
                         <input
+                            type="password"
                             onChange={(e) =>
                                 setUser({
                                     ...user,
                                     password_confirmation: e.target.value,
                                 })
                             }
-                            placeholder="Password Confirmation"
+                            placeholder="Retype Password"
                         />
                         <button className="btn">Save</button>
                     </form>

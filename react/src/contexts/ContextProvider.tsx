@@ -1,4 +1,4 @@
-import {
+import React, {
     createContext,
     Dispatch,
     ReactNode,
@@ -10,27 +10,42 @@ import {
 interface User {
     name: string;
 }
+
 interface StateContextType {
-    // optional user property
     user: Partial<User>;
     token: string | null;
+    notification: string | null;
     setUser: Dispatch<SetStateAction<Partial<User>>>;
     setToken: (token: string | null) => void;
+    setNotification: (message: string) => void;
 }
 
 const StateContext = createContext<StateContextType>({
     user: {},
     token: null,
-    setUser: () => {}, // initialize function
+    notification: null,
+    setUser: () => {},
     setToken: () => {},
+    setNotification: () => {},
 });
 
 interface ContextProviderProps {
     children: ReactNode;
 }
 
-export const ContextProvider = ({ children }: ContextProviderProps) => {
+export const ContextProvider: React.FC<ContextProviderProps> = ({
+    children,
+}) => {
     const [user, setUser] = useState<Partial<User>>({});
+    const [notification, _setNotification] = useState<string | null>("");
+
+    // this will show notification message for 5 seconds
+    const setNotification = (message: string) => {
+        _setNotification(message);
+        setTimeout(() => {
+            _setNotification("");
+        }, 5000);
+    };
 
     // this will save localStorage for keeping the user session
     const [token, _setToken] = useState<string | null>(
@@ -53,6 +68,8 @@ export const ContextProvider = ({ children }: ContextProviderProps) => {
                 token,
                 setUser,
                 setToken,
+                notification,
+                setNotification,
             }}
         >
             {children}
