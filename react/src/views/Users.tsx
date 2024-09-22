@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axiosClient from "../axios-client";
 import { Link } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
+import { Pagination } from "flowbite-react";
 
 interface User {
     id: number;
@@ -13,26 +14,37 @@ interface User {
 const Users: React.FC = () => {
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(false);
+
+    // pagination
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+
     const { setNotification } = useStateContext();
 
     // componentDidMount
     useEffect(() => {
         // getUsers() gets called twice because of React.StrictMode
-        getUsers();
-    }, []);
+        getUsers(currentPage);
+    }, [currentPage]);
 
-    const getUsers = () => {
+    const getUsers = (page: number) => {
         setLoading(true);
         axiosClient
-            .get("/users")
+            .get(`/users?page=${page}`)
             .then(({ data }) => {
                 setLoading(false);
                 console.log(data);
                 setUsers(data.data);
+
+                setTotalPages(data.meta.last_page);
             })
             .catch(() => {
                 setLoading(false);
             });
+    };
+
+    const onPageChange = (page: number) => {
+        setCurrentPage(page);
     };
 
     const onDelete = (user: User) => {
@@ -43,7 +55,7 @@ const Users: React.FC = () => {
             setNotification(`User ${user.name} deleted successfully.`);
 
             // display the users back
-            getUsers();
+            getUsers(currentPage);
         });
     };
 
@@ -108,6 +120,16 @@ const Users: React.FC = () => {
                         </tbody>
                     )}
                 </table>
+                {!loading && (
+                    <div className="flex overflow-x-auto sm:justify-center">
+                        <Pagination
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            onPageChange={onPageChange}
+                            showIcons
+                        />
+                    </div>
+                )}
             </div>
         </>
     );
