@@ -27,7 +27,7 @@ class UserController extends Controller
         $data = $request->validated();
 
         $data['password'] = bcrypt($data['password']);
-        $user = User::create($data);
+        $user = User::query()->create($data);
 
         return response(new UserResource($user), 201);
     }

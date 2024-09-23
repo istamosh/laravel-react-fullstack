@@ -25,8 +25,8 @@ const UserForm: React.FC = () => {
         password_confirmation: "",
     });
 
-    if (id) {
-        useEffect(() => {
+    useEffect(() => {
+        if (id) {
             setLoading(true);
             axiosClient
                 .get(`/users/${id}`)
@@ -37,8 +37,8 @@ const UserForm: React.FC = () => {
                 .catch(() => {
                     setLoading(false);
                 });
-        }, []);
-    }
+        }
+    }, [id]);
 
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

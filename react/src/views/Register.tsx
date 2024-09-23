@@ -57,6 +57,7 @@ const Register = () => {
 
                 <input
                     ref={nameRef as React.RefObject<HTMLInputElement>}
+                    type="text"
                     placeholder="Full Name"
                 />
                 <input

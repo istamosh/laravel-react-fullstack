@@ -19,7 +19,8 @@ const Users: React.FC = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
 
-    const { setNotification } = useStateContext();
+    // get the currently logged in user and notification component
+    const { user, setNotification } = useStateContext();
 
     // componentDidMount
     useEffect(() => {
@@ -111,6 +112,7 @@ const Users: React.FC = () => {
                                         <button
                                             onClick={() => onDelete(user)}
                                             className="btn-delete"
+                                            // disabled={}
                                         >
                                             Delete
                                         </button>

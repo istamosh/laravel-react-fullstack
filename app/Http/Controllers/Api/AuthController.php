@@ -16,7 +16,7 @@ class AuthController extends Controller
         $data = $request->validated();
         // insert annotation
         /** @var \App\Models\User $user */
-        $user = User::create([
+        $user = User::query()->create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
