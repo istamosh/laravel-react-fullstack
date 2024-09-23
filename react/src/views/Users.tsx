@@ -20,7 +20,7 @@ const Users: React.FC = () => {
     const [totalPages, setTotalPages] = useState(1);
 
     // get the currently logged in user and notification component
-    const { user, setNotification } = useStateContext();
+    const { user: contextUser, setNotification } = useStateContext();
 
     // componentDidMount
     useEffect(() => {
@@ -109,13 +109,18 @@ const Users: React.FC = () => {
                                             Edit
                                         </Link>
                                         &nbsp;
-                                        <button
-                                            onClick={() => onDelete(user)}
-                                            className="btn-delete"
-                                            // disabled={}
-                                        >
-                                            Delete
-                                        </button>
+                                        {contextUser &&
+                                            "id" in contextUser &&
+                                            contextUser.id !== user.id && (
+                                                <button
+                                                    onClick={() =>
+                                                        onDelete(user)
+                                                    }
+                                                    className="btn-delete"
+                                                >
+                                                    Delete
+                                                </button>
+                                            )}
                                     </td>
                                 </tr>
                             ))}

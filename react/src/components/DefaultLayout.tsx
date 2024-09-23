@@ -10,6 +10,14 @@ const DefaultLayout: React.FC = () => {
         return <Navigate to="/login" />;
     }
 
+    // add useEffect that using axiosClient to get user data
+    // then dispatch setUser
+    useEffect(() => {
+        axiosClient.get("/user").then(({ data }) => {
+            setUser(data);
+        });
+    }, []);
+
     const onLogout = (
         e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>
     ) => {
@@ -21,14 +29,6 @@ const DefaultLayout: React.FC = () => {
             setToken(null);
         });
     };
-
-    // add useEffect that using axiosClient to get user data
-    // then dispatch setUser
-    useEffect(() => {
-        axiosClient.get("/user").then(({ data }) => {
-            setUser(data);
-        });
-    }, []);
 
     return (
         <div id="defaultLayout">

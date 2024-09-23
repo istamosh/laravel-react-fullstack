@@ -16,7 +16,9 @@ const UserForm: React.FC = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState(null);
-    const { setNotification } = useStateContext();
+
+    // alias setUser to setContextUser to prevent confusion
+    const { setUser: setContextUser, setNotification } = useStateContext();
     const [user, setUser] = useState<User>({
         id: null,
         name: "",
@@ -46,8 +48,11 @@ const UserForm: React.FC = () => {
         if (user.id) {
             axiosClient
                 .put(`/users/${user.id}`, user)
-                .then(() => {
+                .then(({ data }) => {
                     setNotification("User updated successfully.");
+
+                    // display the updated user context for current logged in user
+                    setContextUser(data);
 
                     // redirect to users page
                     navigate("/users");
