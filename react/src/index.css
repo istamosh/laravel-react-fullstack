@@ -196,16 +196,16 @@ table > tbody > tr > td {
 }
 
 #defaultLayout aside {
-    width: 240px;
-    background-color: #5b08a7;
-    padding: 1rem;
+    width: 175px;
+    /* background-color: #5b08a7;
+    padding: 1rem; */
 }
 
 #defaultLayout aside > a {
     display: block;
     padding: 0.75rem 1rem;
     border-radius: 6px;
-    color: white;
+    /* color: white; */
     text-decoration: none;
     transition: all 0.2s;
 }
@@ -221,10 +221,10 @@ table > tbody > tr > td {
 #defaultLayout header {
     height: 80px;
     padding: 2rem 3rem;
-    background-color: white;
+    /* background-color: white; */
     box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     align-items: center;
 }
 

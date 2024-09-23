@@ -69,7 +69,9 @@ const Users: React.FC = () => {
                     alignItems: "center",
                 }}
             >
-                <h1>Users Page</h1>
+                <h3 className="text-3xl font-bold dark:text-white">
+                    User List
+                </h3>
                 <Link to="/users/new" className="btn-add">
                     Add new
                 </Link>
