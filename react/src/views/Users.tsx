@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axiosClient from "../axios-client";
 import { Link } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
-import { Pagination } from "flowbite-react";
+import { Button, Pagination, Table } from "flowbite-react";
 
 interface User {
     id: number;
@@ -72,63 +72,68 @@ const Users: React.FC = () => {
                 <h3 className="text-3xl font-bold dark:text-white">
                     User List
                 </h3>
-                <Link to="/users/new" className="btn-add">
-                    Add new
-                </Link>
+                <Button color="blue">
+                    <Link to="/users/new">Add New</Link>
+                </Button>
             </div>
-            <div className="card animated fadeInDown">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Joined Since</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    {loading ? (
-                        <tbody>
-                            <tr>
-                                <td colSpan={5} className="text-center">
+            <div className="card animated fadeInDown bg-gray-100 dark:bg-gray-900">
+                <Table>
+                    <Table.Head>
+                        <Table.HeadCell>ID</Table.HeadCell>
+                        <Table.HeadCell>Name</Table.HeadCell>
+                        <Table.HeadCell>Email</Table.HeadCell>
+                        <Table.HeadCell>Joined Since</Table.HeadCell>
+                        <Table.HeadCell>Actions</Table.HeadCell>
+                    </Table.Head>
+
+                    <Table.Body className="divide-y">
+                        {loading ? (
+                            <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
+                                <Table.Cell
+                                    colSpan={5}
+                                    className="text-center whitespace-nowrap font-medium text-gray-900 dark:text-white"
+                                >
                                     Loading...
-                                </td>
-                            </tr>
-                        </tbody>
-                    ) : (
-                        <tbody>
-                            {users.map((user) => (
-                                <tr key={user.id}>
-                                    <td>{user.id}</td>
-                                    <td>{user.name}</td>
-                                    <td>{user.email}</td>
-                                    <td>{user.created_at}</td>
-                                    <td>
+                                </Table.Cell>
+                            </Table.Row>
+                        ) : (
+                            users.map((user) => (
+                                <Table.Row
+                                    key={user.id}
+                                    className="bg-white dark:border-gray-700 dark:bg-gray-800"
+                                >
+                                    <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                        {user.id}
+                                    </Table.Cell>
+                                    <Table.Cell>{user.name}</Table.Cell>
+                                    <Table.Cell>{user.email}</Table.Cell>
+                                    <Table.Cell>{user.created_at}</Table.Cell>
+                                    <Table.Cell>
                                         <Link
                                             to={`/users/${user.id}`}
-                                            className="btn-edit"
+                                            className="font-medium text-cyan-600 hover:underline dark:text-cyan-500 mr-4"
                                         >
                                             Edit
                                         </Link>
-                                        &nbsp;
                                         {contextUser &&
                                             "id" in contextUser &&
                                             contextUser.id !== user.id && (
-                                                <button
+                                                <Link
+                                                    to="#"
+                                                    className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                                                     onClick={() =>
                                                         onDelete(user)
                                                     }
-                                                    className="btn-delete"
                                                 >
                                                     Delete
-                                                </button>
+                                                </Link>
                                             )}
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    )}
-                </table>
+                                    </Table.Cell>
+                                </Table.Row>
+                            ))
+                        )}
+                    </Table.Body>
+                </Table>
                 {!loading && (
                     <div className="flex overflow-x-auto sm:justify-center">
                         <Pagination
