@@ -3,7 +3,7 @@ import { Link, Navigate, Outlet } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import axiosClient from "../axios-client";
 import { DarkThemeToggle, Flowbite, Sidebar } from "flowbite-react";
-import { HiViewBoards } from "react-icons/hi";
+import { HiDocumentDuplicate, HiUsers, HiViewBoards } from "react-icons/hi";
 
 const DefaultLayout: React.FC = () => {
     const { user, token, notification, setUser, setToken } = useStateContext();
@@ -46,8 +46,14 @@ const DefaultLayout: React.FC = () => {
                                 </Link>
 
                                 <Link to="/users">
-                                    <Sidebar.Item icon={HiViewBoards}>
+                                    <Sidebar.Item icon={HiUsers}>
                                         Users
+                                    </Sidebar.Item>
+                                </Link>
+
+                                <Link to="/posts">
+                                    <Sidebar.Item icon={HiDocumentDuplicate}>
+                                        Posts
                                     </Sidebar.Item>
                                 </Link>
                             </Sidebar.ItemGroup>

@@ -62,13 +62,7 @@ const Users: React.FC = () => {
 
     return (
         <>
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                }}
-            >
+            <div className="flex justify-between items-center">
                 <h3 className="text-3xl font-bold dark:text-white">
                     User List
                 </h3>
