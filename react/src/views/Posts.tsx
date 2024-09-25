@@ -1,5 +1,6 @@
 import { Button, Card } from "flowbite-react";
 import React from "react";
+import { Link, Navigate } from "react-router-dom";
 
 const Posts: React.FC = () => {
     // define axiosClient for fetching posts
@@ -13,7 +14,9 @@ const Posts: React.FC = () => {
                 <h3 className="text-3xl font-bold dark:text-white mb-3">
                     Posts Page
                 </h3>
-                <Button color="blue">Create Post</Button>
+                <Button color="blue">
+                    <Link to="/posts/new">Create Post</Link>
+                </Button>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">

@@ -11,6 +11,8 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::apiResource('/users', UserController::class);
+
+    //TODO: add is-admin middleware so the /users can only be accessed by admin
 });
 
 // define routes
