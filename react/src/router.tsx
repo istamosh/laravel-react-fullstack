@@ -40,10 +40,6 @@ const router = createBrowserRouter([
                 element: <UserForm key="userUpdate" />,
             },
             {
-                path: "/posts",
-                element: <Posts />,
-            },
-            {
                 path: "/posts/new",
                 element: <PostForm key="postCreate" />,
             },
@@ -60,6 +56,10 @@ const router = createBrowserRouter([
             {
                 path: "/register",
                 element: <Register />,
+            },
+            {
+                path: "/posts",
+                element: <Posts />,
             },
         ],
     },
