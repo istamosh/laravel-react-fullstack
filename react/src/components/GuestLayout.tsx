@@ -15,7 +15,7 @@ const GuestLayout: React.FC = () => {
         <>
             <div className="bg-gray-100 dark:bg-gray-900">
                 <Navbar fluid rounded className="mb-3">
-                    <Navbar.Brand href="https://flowbite-react.com">
+                    <Navbar.Brand href="/login">
                         <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
                             Welcome, Guest!
                         </span>

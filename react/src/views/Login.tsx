@@ -1,7 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import axiosClient from "../axios-client";
+import { Alert, Button, Label, TextInput } from "flowbite-react";
+import { HiInformationCircle } from "react-icons/hi";
 
 interface Errors {
     // flexible props and its string type defining the string array
@@ -16,6 +18,10 @@ const Login: React.FC = () => {
     // when you press CTRL+SPACE the state context will show
     // from ContextProvider
     const { setUser, setToken } = useStateContext();
+
+    useEffect(() => {
+        debugger;
+    }, [errors]);
 
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -50,32 +56,59 @@ const Login: React.FC = () => {
 
     return (
         <>
-            <form action="" onSubmit={onSubmit}>
-                <h1 className="title">Login into your account</h1>
-                {/* display errors */}
+            <form
+                onSubmit={onSubmit}
+                className="flex max-w-md flex-col gap-4 mx-auto"
+            >
+                <h1 className="text-2xl font-bold dark:text-white text-center">
+                    Login
+                </h1>
+
                 {errors && (
-                    <div className="alert">
-                        {Object.keys(errors).map((key) => (
-                            <p key={key}>{errors[key][0]}</p>
-                        ))}
-                    </div>
+                    <Alert color="failure" icon={HiInformationCircle}>
+                        <div className="flex flex-col">
+                            {Object.keys(errors).map((key) => (
+                                <span key={key}>{errors[key][0]}</span>
+                            ))}
+                        </div>
+                    </Alert>
                 )}
-                <input
-                    ref={emailRef as React.RefObject<HTMLInputElement>}
-                    type="email"
-                    placeholder="Email"
-                />
-                <input
-                    ref={passwordRef as React.RefObject<HTMLInputElement>}
-                    type="password"
-                    placeholder="Password"
-                />
-                <button className="btn btn-block">Login</button>
-                <p className="message">
-                    Not registered?{" "}
-                    <Link to="/register">Create an account.</Link>
-                </p>
+
+                <div>
+                    <div className="mb-2 block">
+                        <Label htmlFor="email" value="Your email" />
+                    </div>
+                    <TextInput
+                        ref={emailRef as React.RefObject<HTMLInputElement>}
+                        id="email"
+                        type="email"
+                        placeholder="name@flowbite.com"
+                        required
+                    />
+                </div>
+                <div>
+                    <div className="mb-2 block">
+                        <Label htmlFor="password" value="Your password" />
+                    </div>
+                    <TextInput
+                        ref={passwordRef as React.RefObject<HTMLInputElement>}
+                        id="password"
+                        type="password"
+                        required
+                    />
+                </div>
+                <Button type="submit">Login</Button>
             </form>
+            <p className="mt-2 text-sm text-gray-500 dark:text-gray-400 text-center">
+                Not registered?
+                <Link
+                    to="/register"
+                    className="ml-1 font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+                >
+                    Create an account
+                </Link>
+                .
+            </p>
         </>
     );
 };

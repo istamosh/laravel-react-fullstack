@@ -10,7 +10,7 @@ const Posts: React.FC = () => {
 
     return (
         <>
-            <div className="flex flex-row justify-between items-start">
+            <div className="flex flex-row justify-between items-start w-11/12 mx-auto">
                 <h3 className="text-3xl font-bold dark:text-white mb-3">
                     Posts Page
                 </h3>
@@ -19,7 +19,7 @@ const Posts: React.FC = () => {
                 </Button>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 justify-items-center">
                 {cards.map((_, index) => (
                     <Card key={index} href="#" className="max-w-sm">
                         <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
