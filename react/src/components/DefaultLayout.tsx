@@ -9,7 +9,7 @@ const DefaultLayout: React.FC = () => {
     const { user, token, notification, setUser, setToken } = useStateContext();
 
     if (!token) {
-        return <Navigate to="/login" />;
+        return <Navigate to="/guestposts" />;
     }
 
     // add useEffect that using axiosClient to get user data

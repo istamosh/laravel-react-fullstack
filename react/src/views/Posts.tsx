@@ -1,8 +1,12 @@
 import { Button, Card } from "flowbite-react";
 import React from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useStateContext } from "../contexts/ContextProvider";
 
 const Posts: React.FC = () => {
+    // check if user is authenticated
+    const { token } = useStateContext();
+
     // define axiosClient for fetching posts
 
     // placeholder card display
@@ -14,9 +18,10 @@ const Posts: React.FC = () => {
                 <h3 className="text-3xl font-bold dark:text-white mb-3">
                     Posts Page
                 </h3>
-                <Button color="blue">
-                    <Link to="/posts/new">Create Post</Link>
-                </Button>
+
+                <Link to={token ? "/posts/new" : "/login"}>
+                    <Button color="blue">Create Your Post!</Button>
+                </Link>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 justify-items-center">

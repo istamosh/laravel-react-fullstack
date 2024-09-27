@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import axiosClient from "../axios-client";
@@ -18,10 +18,6 @@ const Login: React.FC = () => {
     // when you press CTRL+SPACE the state context will show
     // from ContextProvider
     const { setUser, setToken } = useStateContext();
-
-    useEffect(() => {
-        debugger;
-    }, [errors]);
 
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -82,7 +78,7 @@ const Login: React.FC = () => {
                         ref={emailRef as React.RefObject<HTMLInputElement>}
                         id="email"
                         type="email"
-                        placeholder="name@flowbite.com"
+                        placeholder="john@doe.com"
                         required
                     />
                 </div>

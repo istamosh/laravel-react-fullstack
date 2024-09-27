@@ -1,10 +1,11 @@
 import React from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import { Button, DarkThemeToggle, Flowbite, Navbar } from "flowbite-react";
 
 const GuestLayout: React.FC = () => {
     const { token } = useStateContext();
+    const location = useLocation();
 
     // if user is already logged in, redirect to home page
     if (token) {
@@ -21,7 +22,11 @@ const GuestLayout: React.FC = () => {
                         </span>
                     </Navbar.Brand>
                     <div className="flex md:order-2">
-                        <Button>Get started</Button>
+                        {location.pathname !== "/guestposts" && (
+                            <Link to="/guestposts">
+                                <Button color="blue">Posts</Button>
+                            </Link>
+                        )}
                         <Flowbite>
                             <DarkThemeToggle className="ml-3" />
                         </Flowbite>
