@@ -20,7 +20,6 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "/",
-                // redirects to /users instead
                 element: <Navigate to="/users" />,
             },
             {

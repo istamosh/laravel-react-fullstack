@@ -9,18 +9,20 @@ const DefaultLayout: React.FC = () => {
     const { user, token, notification, setUser, setToken, refreshUser } =
         useStateContext();
 
-    if (!token) {
-        return <Navigate to="/guestposts" />;
-    }
-
     // add useEffect that using axiosClient to get user data
     // then dispatch setUser
     useEffect(() => {
-        axiosClient.get("/user").then(({ data }) => {
-            setUser(data);
-        });
-        refreshUser();
-    }, []);
+        if (token) {
+            axiosClient.get("/user").then(({ data }) => {
+                setUser(data);
+            });
+            refreshUser();
+        }
+    }, [token]);
+
+    if (!token) {
+        return <Navigate to="/guestposts" />;
+    }
 
     const onLogout = (
         e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>
@@ -45,6 +47,13 @@ const DefaultLayout: React.FC = () => {
                     <Sidebar aria-label="Default sidebar example">
                         <Sidebar.Items>
                             <Sidebar.ItemGroup>
+                                {user && user.is_admin ? (
+                                    <Link to="/users">
+                                        <Sidebar.Item icon={HiUsers}>
+                                            Users
+                                        </Sidebar.Item>
+                                    </Link>
+                                ) : null}
                                 <Link to="/dashboard">
                                     <Sidebar.Item icon={HiViewBoards}>
                                         Dashboard
@@ -55,13 +64,6 @@ const DefaultLayout: React.FC = () => {
                                         Posts
                                     </Sidebar.Item>
                                 </Link>
-                                {user && user.is_admin && (
-                                    <Link to="/users">
-                                        <Sidebar.Item icon={HiUsers}>
-                                            Users
-                                        </Sidebar.Item>
-                                    </Link>
-                                )}
                             </Sidebar.ItemGroup>
                         </Sidebar.Items>
                     </Sidebar>
