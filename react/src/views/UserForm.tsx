@@ -18,7 +18,12 @@ const UserForm: React.FC = () => {
     const [errors, setErrors] = useState(null);
 
     // alias setUser to setContextUser to prevent confusion
-    const { setUser: setContextUser, setNotification } = useStateContext();
+    const {
+        user: contextUser,
+        setUser: setContextUser,
+        setNotification,
+        refreshUser,
+    } = useStateContext();
     const [user, setUser] = useState<User>({
         id: null,
         name: "",
@@ -52,9 +57,13 @@ const UserForm: React.FC = () => {
                     setNotification("User updated successfully.");
 
                     // display the updated user context for current logged in user
-                    setContextUser(data);
+                    if (data.id === contextUser.id) {
+                        setContextUser(data);
+                    }
 
-                    // redirect to users page
+                    // Trigger re-fetching of user data
+                    refreshUser();
+
                     navigate("/users");
                 })
                 .catch((err) => {

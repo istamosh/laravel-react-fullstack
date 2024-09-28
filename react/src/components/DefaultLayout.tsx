@@ -6,7 +6,8 @@ import { DarkThemeToggle, Flowbite, Sidebar } from "flowbite-react";
 import { HiDocumentDuplicate, HiUsers, HiViewBoards } from "react-icons/hi";
 
 const DefaultLayout: React.FC = () => {
-    const { user, token, notification, setUser, setToken } = useStateContext();
+    const { user, token, notification, setUser, setToken, refreshUser } =
+        useStateContext();
 
     if (!token) {
         return <Navigate to="/guestposts" />;
@@ -18,6 +19,7 @@ const DefaultLayout: React.FC = () => {
         axiosClient.get("/user").then(({ data }) => {
             setUser(data);
         });
+        refreshUser();
     }, []);
 
     const onLogout = (
@@ -27,7 +29,11 @@ const DefaultLayout: React.FC = () => {
 
         // trigger backend logout request and clear the user and token
         axiosClient.post("/logout").then(() => {
-            setUser({});
+            setUser({
+                id: null,
+                name: "",
+                is_admin: false,
+            });
             setToken(null);
         });
     };
@@ -44,18 +50,18 @@ const DefaultLayout: React.FC = () => {
                                         Dashboard
                                     </Sidebar.Item>
                                 </Link>
-
-                                <Link to="/users">
-                                    <Sidebar.Item icon={HiUsers}>
-                                        Users
-                                    </Sidebar.Item>
-                                </Link>
-
                                 <Link to="/posts">
                                     <Sidebar.Item icon={HiDocumentDuplicate}>
                                         Posts
                                     </Sidebar.Item>
                                 </Link>
+                                {user && user.is_admin && (
+                                    <Link to="/users">
+                                        <Sidebar.Item icon={HiUsers}>
+                                            Users
+                                        </Sidebar.Item>
+                                    </Link>
+                                )}
                             </Sidebar.ItemGroup>
                         </Sidebar.Items>
                     </Sidebar>
