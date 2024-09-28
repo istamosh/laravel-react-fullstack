@@ -19,8 +19,7 @@ const Users: React.FC = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
 
-    // get the currently logged in user and notification component
-    const { user: contextUser, setNotification } = useStateContext();
+    const { setNotification } = useStateContext();
 
     // componentDidMount
     useEffect(() => {
@@ -52,12 +51,25 @@ const Users: React.FC = () => {
         if (!window.confirm("Are you sure you want to delete this user?")) {
             return;
         }
-        axiosClient.delete(`/users/${user.id}`).then(() => {
-            setNotification(`User ${user.name} deleted successfully.`);
+        axiosClient
+            .delete(`/users/${user.id}`)
+            .then(() => {
+                setNotification(`User ${user.name} deleted successfully.`);
 
-            // display the users back
-            getUsers(currentPage);
-        });
+                // display the users back
+                getUsers(currentPage);
+            })
+            .catch((err) => {
+                const response = err.response;
+                // catching 403 from the backend
+                if (response && response.status === 403) {
+                    setNotification(response.data.error);
+                } else {
+                    setNotification(
+                        "An error occurred while deleting the user."
+                    );
+                }
+            });
     };
 
     return (
@@ -109,19 +121,13 @@ const Users: React.FC = () => {
                                         >
                                             Edit
                                         </Link>
-                                        {contextUser &&
-                                            "id" in contextUser &&
-                                            contextUser.id !== user.id && (
-                                                <Link
-                                                    to="#"
-                                                    className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-                                                    onClick={() =>
-                                                        onDelete(user)
-                                                    }
-                                                >
-                                                    Delete
-                                                </Link>
-                                            )}
+                                        <Link
+                                            to="#"
+                                            className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+                                            onClick={() => onDelete(user)}
+                                        >
+                                            Delete
+                                        </Link>
                                     </Table.Cell>
                                 </Table.Row>
                             ))
