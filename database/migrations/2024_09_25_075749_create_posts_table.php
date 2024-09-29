@@ -14,15 +14,15 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
-
-            // creating new post will fill the user_id entry with the current authenticated user
-            // if the user is deleted, all of the user's posts will be deleted as well
-            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
 
             // provide your migration fields here
             $table->string('title');
             $table->text('content');
+
+            // FK to users table, when user is deleted, delete the post as well
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
+
+            $table->timestamps();
         });
     }
 

@@ -10,12 +10,7 @@ export const content = [
 export const theme = {
     extend: {},
 };
-export const plugins = [
-    plugin(),
-    require("tailwindcss"),
-    require("autoprefixer"),
-    require("@tailwindcss/typography"),
-];
+export const plugins = [plugin(), require("@tailwindcss/typography")];
 
 // CommonJS-------------------------------------
 // const flowbite = require("flowbite-react/tailwind");

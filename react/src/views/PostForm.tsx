@@ -23,7 +23,7 @@ const PostForm: React.FC = () => {
                     required
                 />
                 <Textarea
-                    id="comment"
+                    id="post"
                     placeholder="You can use Markdown here..."
                     required
                     rows={4}
@@ -31,8 +31,9 @@ const PostForm: React.FC = () => {
                     onChange={handleInputChange}
                 />
                 <Button type="submit">Post!</Button>
-                <div className="dark:text-white">
-                    <h3 className="text-lg">Preview:</h3>
+
+                <div>
+                    <h3 className="text-lg dark:text-white">Preview:</h3>
                     <ReactMarkdown className="prose lg:prose-xl dark:prose-invert">
                         {markdownInput}
                     </ReactMarkdown>

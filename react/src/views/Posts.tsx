@@ -10,7 +10,7 @@ const Posts: React.FC = () => {
     // define axiosClient for fetching posts
 
     // placeholder card display
-    const cards = [1, 2, 3, 4, 5, 6];
+    const cards = new Array(6).fill(null);
 
     return (
         <>

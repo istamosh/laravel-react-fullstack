@@ -13,7 +13,7 @@ class Post extends Model
     protected $fillable = [
         'title',
         'content',
-        'user_id',
+        'user_id', // this is the foreign key field for user that created the post
     ];
 
     // define relationship with user, will be accessed through $post->user
