@@ -24,7 +24,7 @@ const Posts: React.FC = () => {
                 </Link>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="animated fadeInDown grid grid-cols-2 md:grid-cols-3 gap-4">
                 {cards.map((_, index) => (
                     <Card key={index} href="#" className="max-w-sm">
                         <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">

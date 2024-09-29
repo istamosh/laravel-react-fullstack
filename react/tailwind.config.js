@@ -1,18 +1,31 @@
-const flowbite = require("flowbite-react/tailwind");
+import { content as _content, plugin } from "flowbite-react/tailwind";
 
 /** @type {import('tailwindcss').Config} */
-// export default {
+
+export const content = [
+    "./index.html",
+    "./src/**/*.{js,jsx,ts,tsx}",
+    _content(),
+];
+export const theme = {
+    extend: {},
+};
+export const plugins = [
+    plugin(),
+    require("tailwindcss"),
+    require("autoprefixer"),
+    require("@tailwindcss/typography"),
+];
+
+// CommonJS-------------------------------------
+// const flowbite = require("flowbite-react/tailwind");
+
+// /** @type {import('tailwindcss').Config} */
+
+// module.exports = {
 //     content: ["./index.html", "./src/**/*.{js,jsx,ts,tsx}", flowbite.content()],
 //     theme: {
 //         extend: {},
 //     },
-//     plugins: [flowbite.plugin()],
+//     plugins: [flowbite.plugin(), require("@tailwindcss/typography")],
 // };
-
-module.exports = {
-    content: ["./index.html", "./src/**/*.{js,jsx,ts,tsx}", flowbite.content()],
-    theme: {
-        extend: {},
-    },
-    plugins: [flowbite.plugin()],
-};

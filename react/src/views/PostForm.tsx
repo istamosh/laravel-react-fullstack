@@ -1,7 +1,14 @@
 import { Button, Textarea, TextInput } from "flowbite-react";
-import React from "react";
+import React, { useState } from "react";
+import ReactMarkdown from "react-markdown";
 
 const PostForm: React.FC = () => {
+    const [markdownInput, setMarkdownInput] = useState<string>("");
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setMarkdownInput(e.target.value);
+    };
+
     return (
         <>
             <h3 className="text-3xl font-bold dark:text-white mb-3">
@@ -20,8 +27,16 @@ const PostForm: React.FC = () => {
                     placeholder="You can use Markdown here..."
                     required
                     rows={4}
+                    value={markdownInput}
+                    onChange={handleInputChange}
                 />
                 <Button type="submit">Post!</Button>
+                <div className="dark:text-white">
+                    <h3 className="text-lg">Preview:</h3>
+                    <ReactMarkdown className="prose lg:prose-xl dark:prose-invert">
+                        {markdownInput}
+                    </ReactMarkdown>
+                </div>
             </form>
         </>
     );
