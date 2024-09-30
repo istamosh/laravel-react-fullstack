@@ -1,5 +1,5 @@
-import { Button, Card } from "flowbite-react";
-import React, { useState } from "react";
+import { Button, Card, Pagination } from "flowbite-react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import axiosClient from "../axios-client";
@@ -17,8 +17,14 @@ const Posts: React.FC = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
 
+    const { setNotification } = useStateContext();
+
     // check if user is authenticated
     const { token } = useStateContext();
+
+    useEffect(() => {
+        getPosts(currentPage);
+    }, [currentPage]);
 
     // define axiosClient for fetching posts
 
@@ -37,6 +43,10 @@ const Posts: React.FC = () => {
                 setLoading(false);
             });
     };
+
+    const onPageChange = (page: number) => {
+        setCurrentPage(page);
+    };
     return (
         <>
             <div className="flex flex-row justify-between items-start w-11/12 mx-auto">
@@ -51,7 +61,11 @@ const Posts: React.FC = () => {
 
             <div className="animated fadeInDown grid grid-cols-2 md:grid-cols-3 gap-4">
                 {posts.map((post) => (
-                    <Card key={post.id} href="#" className="max-w-sm">
+                    <Card
+                        key={post.id}
+                        href={`/posts/${post.id}`}
+                        className="max-w-sm"
+                    >
                         <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                             {post.title}
                         </h5>
@@ -61,6 +75,17 @@ const Posts: React.FC = () => {
                     </Card>
                 ))}
             </div>
+
+            {!loading && (
+                <div className="flex overflow-x-auto sm:justify-center">
+                    <Pagination
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={onPageChange}
+                        showIcons
+                    />
+                </div>
+            )}
         </>
     );
 };

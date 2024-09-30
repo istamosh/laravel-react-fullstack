@@ -19,6 +19,7 @@ class PostResource extends JsonResource
     {
         // display as JSON in axios response
         return [
+            'id' => $this->id,
             'title' => $this->title,
             'content' => $this->content,
             'user_id' => $this->user_id,

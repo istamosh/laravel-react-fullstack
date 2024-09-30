@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Post;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -27,6 +28,13 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // seed a total of 50 users
-        User::factory()->count(50)->create();
+        $users = User::factory()->count(50)->create();
+    
+        // seed a total of 100 posts
+        Post::factory()->count(100)->create([
+            'user_id' => function() use ($users) { 
+                return $users->random()->id;
+            },
+        ]);
     }
 }
