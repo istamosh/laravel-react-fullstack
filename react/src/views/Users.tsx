@@ -78,9 +78,9 @@ const Users: React.FC = () => {
                 <h3 className="text-3xl font-bold dark:text-white">
                     User List
                 </h3>
-                <Button color="blue">
-                    <Link to="/users/new">Add New</Link>
-                </Button>
+                <Link to="/users/new">
+                    <Button color="blue">Add New</Button>
+                </Link>
             </div>
             <div className="card animated fadeInDown bg-gray-100 dark:bg-gray-900">
                 <Table>

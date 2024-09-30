@@ -1,17 +1,42 @@
 import { Button, Card } from "flowbite-react";
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
+import axiosClient from "../axios-client";
+
+interface Post {
+    id: number;
+    title: string;
+    content: string;
+}
 
 const Posts: React.FC = () => {
+    const [posts, setPosts] = useState<Post[]>([]);
+    const [loading, setLoading] = useState(false);
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+
     // check if user is authenticated
     const { token } = useStateContext();
 
     // define axiosClient for fetching posts
 
-    // placeholder card display
-    const cards = new Array(6).fill(null);
-
+    // fetch posts/pagination
+    const getPosts = (page: number) => {
+        setLoading(true);
+        axiosClient
+            .get(`/posts?page=${page}`)
+            .then(({ data }) => {
+                setLoading(false);
+                console.log(data);
+                setPosts(data.data);
+                setTotalPages(data.meta.last_page);
+            })
+            .catch(() => {
+                setLoading(false);
+            });
+    };
     return (
         <>
             <div className="flex flex-row justify-between items-start w-11/12 mx-auto">
@@ -25,15 +50,13 @@ const Posts: React.FC = () => {
             </div>
 
             <div className="animated fadeInDown grid grid-cols-2 md:grid-cols-3 gap-4">
-                {cards.map((_, index) => (
-                    <Card key={index} href="#" className="max-w-sm">
+                {posts.map((post) => (
+                    <Card key={post.id} href="#" className="max-w-sm">
                         <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                            Noteworthy technology acquisitions 2021
+                            {post.title}
                         </h5>
                         <p className="font-normal text-gray-700 dark:text-gray-400">
-                            Here are the biggest enterprise technology
-                            acquisitions of 2021 so far, in reverse
-                            chronological order.
+                            {post.content}
                         </p>
                     </Card>
                 ))}
