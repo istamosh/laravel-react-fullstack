@@ -20,3 +20,6 @@ Route::middleware('auth:sanctum')->group(function () {
 // define routes
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+
+// Expose /guestposts route
+Route::get('/guestposts', [PostController::class, 'index']);

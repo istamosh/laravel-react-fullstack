@@ -26,13 +26,11 @@ const Posts: React.FC = () => {
         getPosts(currentPage);
     }, [currentPage]);
 
-    // define axiosClient for fetching posts
-
     // fetch posts/pagination
     const getPosts = (page: number) => {
         setLoading(true);
         axiosClient
-            .get(`/posts?page=${page}`)
+            .get(token ? `/posts?page=${page}` : `/guestposts?page=${page}`)
             .then(({ data }) => {
                 setLoading(false);
                 console.log(data);
@@ -63,7 +61,7 @@ const Posts: React.FC = () => {
                 {posts.map((post) => (
                     <Card
                         key={post.id}
-                        href={`/posts/${post.id}`}
+                        href={token ? `/posts/${post.id}` : undefined}
                         className="max-w-sm"
                     >
                         <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
