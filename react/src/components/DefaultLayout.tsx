@@ -49,18 +49,18 @@ const DefaultLayout: React.FC = () => {
                             <Sidebar.ItemGroup>
                                 {user && user.is_admin ? (
                                     <Link to="/users">
-                                        <Sidebar.Item icon={HiUsers}>
+                                        <Sidebar.Item as='div' icon={HiUsers}>
                                             Users
                                         </Sidebar.Item>
                                     </Link>
                                 ) : null}
                                 <Link to="/dashboard">
-                                    <Sidebar.Item icon={HiViewBoards}>
+                                    <Sidebar.Item as='div' icon={HiViewBoards}>
                                         Dashboard
                                     </Sidebar.Item>
                                 </Link>
                                 <Link to="/posts">
-                                    <Sidebar.Item icon={HiDocumentDuplicate}>
+                                    <Sidebar.Item as='div' icon={HiDocumentDuplicate}>
                                         Posts
                                     </Sidebar.Item>
                                 </Link>

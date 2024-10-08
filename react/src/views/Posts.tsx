@@ -33,7 +33,6 @@ const Posts: React.FC = () => {
             .get(token ? `/posts?page=${page}` : `/guestposts?page=${page}`)
             .then(({ data }) => {
                 setLoading(false);
-                console.log(data);
                 setPosts(data.data);
                 setTotalPages(data.meta.last_page);
             })
