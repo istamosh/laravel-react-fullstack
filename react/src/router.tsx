@@ -1,5 +1,3 @@
-// handles page routing
-
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import Login from "./views/Login";
 import Register from "./views/Register";
