@@ -45,20 +45,14 @@ const router = createBrowserRouter([
             {
                 path: "/posts",
                 element: <Posts />,
-                children: [
-                    {
-                        path: "",
-                        element: <Posts />,
-                    },
-                    {
-                        path: "new",
-                        element: <PostForm key="postCreate" />,
-                    },
-                    {
-                        path: ":id",
-                        element: <PostForm key="postUpdate" />,
-                    },
-                ],
+            },
+            {
+                path: "/posts/new",
+                element: <PostForm key="postCreate" />,
+            },
+            {
+                path: "/posts/:id",
+                element: <PostForm key="postUpdate" />,
             },
         ],
     },

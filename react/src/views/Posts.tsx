@@ -19,9 +19,10 @@ const Posts: React.FC = () => {
 
     const { setNotification } = useStateContext();
 
-    // check if user is authenticated
+    // fetch logged token
     const { token } = useStateContext();
 
+    // fetch posts on page load
     useEffect(() => {
         getPosts(currentPage);
     }, [currentPage]);
@@ -33,7 +34,6 @@ const Posts: React.FC = () => {
             .get(token ? `/posts?page=${page}` : `/guestposts?page=${page}`)
             .then(({ data }) => {
                 setLoading(false);
-                console.log(data);
                 setPosts(data.data);
                 setTotalPages(data.meta.last_page);
             })
@@ -45,6 +45,32 @@ const Posts: React.FC = () => {
     const onPageChange = (page: number) => {
         setCurrentPage(page);
     };
+
+    const onDelete = (post: Post) => {
+        if (!window.confirm("Are you sure you want to delete this post?")) {
+            return;
+        }
+        axiosClient
+            .delete(`/posts/${post.id}`)
+            .then(() => {
+                setNotification(`Post ${post.title} deleted successfully.`);
+
+                // display the posts back
+                getPosts(currentPage);
+            })
+            .catch((err) => {
+                const response = err.response;
+                // catching 403 from the backend
+                if (response && response.status === 403) {
+                    setNotification(response.data.message);
+                } else {
+                    setNotification(
+                        "An error occurred while deleting the post."
+                    );
+                }
+            });
+    };
+
     return (
         <>
             <div className="flex flex-row justify-between items-start w-11/12 mx-auto">
@@ -72,6 +98,14 @@ const Posts: React.FC = () => {
                         </p>
                         <Link to={token ? `/posts/${post.id}` : ""}>
                             <Button color="blue">Edit</Button>
+                        </Link>
+
+                        <Link
+                            to="#"
+                            className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+                            onClick={() => onDelete(post)}
+                        >
+                            Delete
                         </Link>
                     </Card>
                 ))}

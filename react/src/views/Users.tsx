@@ -15,15 +15,12 @@ const Users: React.FC = () => {
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(false);
 
-    // pagination
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
 
     const { setNotification } = useStateContext();
 
-    // componentDidMount
     useEffect(() => {
-        // getUsers() gets called twice because of React.StrictMode
         getUsers(currentPage);
     }, [currentPage]);
 
@@ -33,9 +30,7 @@ const Users: React.FC = () => {
             .get(`/users?page=${page}`)
             .then(({ data }) => {
                 setLoading(false);
-                console.log(data);
                 setUsers(data.data);
-
                 setTotalPages(data.meta.last_page);
             })
             .catch(() => {

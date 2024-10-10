@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
     public function index()
     {
         $posts = Post::query()->orderBy('created_at', 'desc')->paginate(6);
@@ -36,13 +40,11 @@ class PostController extends Controller
     }
     public function destroy(Post $post)
     {
-        // only logged in user can delete their own post, otherwise return json 403
-        if ($post->user_id !== Auth::id()) {
-            return response()->json(['error' => 'You can only delete your post'], 403);
+        if (Auth::user()->is_admin || $post->user_id === Auth::id()) {
+            $post->delete();
+            return response(null, 204);
         }
 
-        $post->delete();
-
-        return response(null, 204);
+        return response()->json(['error' => 'You can only delete your post'], 403);
     }
 }

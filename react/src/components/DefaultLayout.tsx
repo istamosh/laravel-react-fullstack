@@ -9,8 +9,7 @@ const DefaultLayout: React.FC = () => {
     const { user, token, notification, setUser, setToken, refreshUser } =
         useStateContext();
 
-    // add useEffect that using axiosClient to get user data
-    // then dispatch setUser
+    // displaying the user name in the header
     useEffect(() => {
         if (token) {
             axiosClient.get("/user").then(({ data }) => {
