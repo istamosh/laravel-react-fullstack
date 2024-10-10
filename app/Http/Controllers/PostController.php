@@ -39,6 +39,11 @@ class PostController extends Controller
             $data['admin_touched'] = true;
         }
 
+        // disallow update if user is not the owner of the post
+        if ($post->user_id !== Auth::id() && !Auth::user()->is_admin) {
+            return response()->json(['error' => 'You can only update your post'], 403);
+        }
+
         $post->update($data);
 
         return new PostResource($post);

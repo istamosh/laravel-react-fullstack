@@ -62,7 +62,9 @@ const Posts: React.FC = () => {
                 const response = err.response;
                 // catching 403 from the backend
                 if (response && response.status === 403) {
-                    setNotification(response.data.message);
+                    setNotification(
+                        response.statusText + ": " + response.data.error
+                    );
                 } else {
                     setNotification(
                         "An error occurred while deleting the post."
@@ -83,44 +85,46 @@ const Posts: React.FC = () => {
                 </Link>
             </div>
 
-            <div className="animated fadeInDown grid grid-cols-2 md:grid-cols-3 gap-4">
-                {posts.map((post) => (
-                    <Card
-                        key={post.id}
-                        // href={token ? `/posts/${post.id}` : undefined}
-                        className="max-w-sm"
-                    >
-                        <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                            {post.title}
-                        </h5>
-                        <p className="font-normal text-gray-700 dark:text-gray-400">
-                            {post.content}
-                        </p>
-                        <Link to={token ? `/posts/${post.id}` : ""}>
-                            <Button color="blue">Edit</Button>
-                        </Link>
-
-                        <Link
-                            to="#"
-                            className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-                            onClick={() => onDelete(post)}
-                        >
-                            Delete
-                        </Link>
-                    </Card>
-                ))}
-            </div>
-
             {!loading && (
-                <div className="flex overflow-x-auto sm:justify-center">
-                    <Pagination
-                        currentPage={currentPage}
-                        totalPages={totalPages}
-                        onPageChange={onPageChange}
-                        showIcons
-                    />
-                </div>
+                <>
+                    <div className="animated fadeInDown grid grid-cols-2 md:grid-cols-3 gap-4">
+                        {posts.map((post) => (
+                            <Card key={post.id} className="max-w-sm">
+                                <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                    {post.title}
+                                </h5>
+                                <p className="font-normal text-gray-700 dark:text-gray-400">
+                                    {post.content.replace(/#/g, "")}
+                                </p>
+
+                                {token && (
+                                    <>
+                                        <Link to={`/posts/${post.id}`}>
+                                            <Button color="blue">View</Button>
+                                        </Link>
+
+                                        <Link
+                                            to="#"
+                                            onClick={() => onDelete(post)}
+                                        >
+                                            <Button color="red">Delete</Button>
+                                        </Link>
+                                    </>
+                                )}
+                            </Card>
+                        ))}
+                    </div>
+                </>
             )}
+
+            <div className="flex overflow-x-auto sm:justify-center">
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={onPageChange}
+                    showIcons
+                />
+            </div>
         </>
     );
 };
