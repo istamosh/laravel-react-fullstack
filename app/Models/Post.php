@@ -14,6 +14,7 @@ class Post extends Model
         'title',
         'content',
         'user_id', // this is the foreign key field for user that created the post
+        'admin_touched', // this field will be used to track if admin has touched the post
     ];
 
     // define relationship with user, will be accessed through $post->user

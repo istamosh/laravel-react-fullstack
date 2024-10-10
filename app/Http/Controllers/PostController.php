@@ -34,6 +34,11 @@ class PostController extends Controller
     {
         $data = $request->validated();
 
+        // check if an admin is updating the post
+        if (Auth::user()->is_admin && $post->user_id !== Auth::id() && $data['admin_touched'] !== true) {
+            $data['admin_touched'] = true;
+        }
+
         $post->update($data);
 
         return new PostResource($post);

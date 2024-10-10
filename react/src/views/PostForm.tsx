@@ -3,11 +3,17 @@ import { useNavigate, useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import { Button, Textarea, TextInput } from "flowbite-react";
 import axiosClient from "../axios-client";
+import { useStateContext } from "../contexts/ContextProvider";
 
 interface Post {
     id: number | null;
     title: string;
     content: string;
+    user_id: string;
+    user_name: string;
+    admin_touched: boolean;
+    created_at: string;
+    updated_at: string;
 }
 
 const PostForm: React.FC = () => {
@@ -16,10 +22,18 @@ const PostForm: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState(null);
     const [markdownInput, setMarkdownInput] = useState<string>("");
+
+    const { setNotification } = useStateContext();
+
     const [post, setPost] = useState<Post>({
         id: null,
         title: "",
         content: "",
+        user_id: "",
+        user_name: "",
+        admin_touched: false,
+        created_at: "",
+        updated_at: "",
     });
 
     useEffect(() => {
@@ -47,6 +61,8 @@ const PostForm: React.FC = () => {
             axiosClient
                 .put(`/posts/${post.id}`, post)
                 .then(() => {
+                    setNotification("Post updated successfully.");
+
                     navigate("/posts");
                 })
                 .catch((err) => {
@@ -60,6 +76,7 @@ const PostForm: React.FC = () => {
             axiosClient
                 .post(`/posts`, post)
                 .then(() => {
+                    setNotification("Post created successfully.");
                     navigate("/posts");
                 })
                 .catch((err) => {
@@ -95,7 +112,11 @@ const PostForm: React.FC = () => {
                 <div>Loading...</div>
             ) : (
                 <>
-                    <form className="flex flex-col gap-4" onSubmit={onSubmit}>
+                    <form
+                        action=""
+                        className="flex flex-col gap-4"
+                        onSubmit={onSubmit}
+                    >
                         <TextInput
                             id="title"
                             type="text"
@@ -118,7 +139,11 @@ const PostForm: React.FC = () => {
                             value={markdownInput}
                             onChange={handleInputChange}
                         />
-                        <Button color="blue">Post!</Button>
+                        <button>
+                            <Button as="div" color="blue">
+                                Post!
+                            </Button>
+                        </button>
                     </form>
 
                     <div>
@@ -126,6 +151,16 @@ const PostForm: React.FC = () => {
                         <ReactMarkdown className="prose lg:prose-xl dark:prose-invert">
                             {markdownInput}
                         </ReactMarkdown>
+                    </div>
+
+                    <div className="dark:text-white">
+                        <p>
+                            Author: {post.user_name} ({post.user_id})
+                            {post.admin_touched ? ", admin" : ""}.
+                        </p>
+                        <p>Created At: {post.created_at}</p>
+                        <p>Updated At: {post.updated_at}</p>
+                        <p>Post ID: {post.id}</p>
                     </div>
                 </>
             )}

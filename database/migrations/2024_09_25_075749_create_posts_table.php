@@ -22,6 +22,9 @@ return new class extends Migration
             // FK to users table, when user is deleted, delete the post as well
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
 
+            // provide admin_touched field to track if admin has touched the post
+            $table->boolean('admin_touched')->default(false);
+
             $table->timestamps();
         });
     }

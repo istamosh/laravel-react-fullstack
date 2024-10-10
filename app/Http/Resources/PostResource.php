@@ -23,6 +23,8 @@ class PostResource extends JsonResource
             'title' => $this->title,
             'content' => $this->content,
             'user_id' => $this->user_id,
+            'user_name' => $this->user->name, // get the linked user name
+            'admin_touched' => $this->admin_touched,
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
         ];
