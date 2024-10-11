@@ -98,6 +98,11 @@ const PostForm: React.FC = () => {
         setPost({ ...post, content: e.target.value });
     };
 
+    const convertUTCToLocal = (dateString: string) => {
+        const date = new Date(dateString + "Z"); // Appending 'Z' treats the date string as UTC
+        return date.toLocaleString(); // Adjusts to local timezone
+    };
+
     return (
         <>
             <h3 className="text-3xl font-bold dark:text-white mb-3">
@@ -168,21 +173,40 @@ const PostForm: React.FC = () => {
                                     {markdownInput}
                                 </ReactMarkdown>
                             </div>
-
-                            <div className="dark:text-white">
-                                <p>
-                                    Author: {post.user_name} ({post.user_id})
-                                    {post.admin_touched ? ", admin" : ""}.
-                                </p>
-                                <p>Created At: {post.created_at}</p>
-                                <p>Updated At: {post.updated_at}</p>
-                                <p>Post ID: {post.id}</p>
-                            </div>
                         </>
                     ) : (
-                        <ReactMarkdown className="prose lg:prose-xl dark:prose-invert">
-                            {markdownInput}
-                        </ReactMarkdown>
+                        <>
+                            <ReactMarkdown className="prose lg:prose-xl dark:prose-invert">
+                                {markdownInput}
+                            </ReactMarkdown>
+                        </>
+                    )}
+
+                    {post.id && (
+                        <div
+                            className="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400"
+                            role="alert"
+                        >
+                            <span className="flex flex-col">
+                                <span>
+                                    <span className="font-medium">Author:</span>{" "}
+                                    {post.user_name}
+                                    {post.admin_touched ? ", admin" : ""}
+                                </span>
+                                <span>
+                                    <span className="font-medium">
+                                        Created At:
+                                    </span>{" "}
+                                    {convertUTCToLocal(post.created_at)}
+                                </span>
+                                <span>
+                                    <span className="font-medium">
+                                        Updated At:
+                                    </span>{" "}
+                                    {convertUTCToLocal(post.updated_at)}
+                                </span>
+                            </span>
+                        </div>
                     )}
                 </div>
             )}
