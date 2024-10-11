@@ -47,8 +47,8 @@ class PostController extends Controller
 
         $data['admin_touched'] = false;
 
-        // check if an admin is updating the post
-        if (Auth::user()->is_admin && $data['admin_touched'] === false) {
+        // check if an admin is updating the post (excluding admin's own post)
+        if (Auth::user()->is_admin && $data['admin_touched'] === false && $post->user->is_admin === false) {
             $data['admin_touched'] = true;
         }
 
