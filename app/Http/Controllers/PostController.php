@@ -25,6 +25,9 @@ class PostController extends Controller
     {
         $data = $request->validated();
 
+        // set the user_id to the authenticated user id if not provided yet
+        $data['user_id'] = $data['user_id'] ?? Auth::id();
+
         $post = Post::query()->create($data);
 
         return response(new PostResource($post), 201);

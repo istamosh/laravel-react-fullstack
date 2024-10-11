@@ -110,7 +110,8 @@ const PostForm: React.FC = () => {
 
             {!loading && (
                 <div className="animated fadeInDown">
-                    {user.id === post.user_id || user.is_admin ? (
+                    {/* allows editing for the admin/post author, OR create new if post id doesn't exist */}
+                    {user.id === post.user_id || user.is_admin || !post.id ? (
                         <>
                             <form
                                 action=""
