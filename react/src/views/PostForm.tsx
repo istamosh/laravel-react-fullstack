@@ -190,7 +190,8 @@ const PostForm: React.FC = () => {
                             <span className="flex flex-col">
                                 <span>
                                     <span className="font-medium">Author:</span>{" "}
-                                    {post.user_name}
+                                    {post.user_name}{" "}
+                                    {user.is_admin ? `(${post.user_id})` : ""}
                                     {post.admin_touched ? ", admin" : ""}
                                 </span>
                                 <span>

@@ -10,6 +10,7 @@ import UserForm from "./views/UserForm";
 import Posts from "./views/Posts";
 import PostForm from "./views/PostForm";
 import AdminRoute from "./components/AdminRoute";
+import UserOrAdminRoute from "./components/UserOrAdminRoute";
 
 const router = createBrowserRouter([
     {
@@ -36,8 +37,14 @@ const router = createBrowserRouter([
                         path: "new",
                         element: <UserForm key="userCreate" />,
                     },
+                ],
+            },
+            {
+                path: "/users/:id",
+                element: <UserOrAdminRoute />,
+                children: [
                     {
-                        path: ":id",
+                        path: "",
                         element: <UserForm key="userUpdate" />,
                     },
                 ],
