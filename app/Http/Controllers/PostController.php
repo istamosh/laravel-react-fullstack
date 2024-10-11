@@ -15,7 +15,10 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::query()->orderBy('created_at', 'desc')->paginate(6);
+        $posts = Post::query()
+            ->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
+            ->paginate(6);
         return PostResource::collection($posts);
     }
     public function store(StorePostRequest $request)
@@ -34,14 +37,16 @@ class PostController extends Controller
     {
         $data = $request->validated();
 
-        // check if an admin is updating the post
-        if (Auth::user()->is_admin && $post->user_id !== Auth::id() && $data['admin_touched'] !== true) {
-            $data['admin_touched'] = true;
-        }
-
         // disallow update if user is not the owner of the post
         if ($post->user_id !== Auth::id() && !Auth::user()->is_admin) {
             return response()->json(['error' => 'You can only update your post'], 403);
+        }
+
+        $data['admin_touched'] = false;
+
+        // check if an admin is updating the post
+        if (Auth::user()->is_admin && $data['admin_touched'] === false) {
+            $data['admin_touched'] = true;
         }
 
         $post->update($data);

@@ -8,6 +8,7 @@ interface Post {
     id: number;
     title: string;
     content: string;
+    user_id: number;
 }
 
 const Posts: React.FC = () => {
@@ -17,10 +18,7 @@ const Posts: React.FC = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
 
-    const { setNotification } = useStateContext();
-
-    // fetch logged token
-    const { token } = useStateContext();
+    const { user, token, setNotification } = useStateContext();
 
     // fetch posts on page load
     useEffect(() => {
@@ -98,18 +96,24 @@ const Posts: React.FC = () => {
                                 </p>
 
                                 {token && (
-                                    <>
+                                    <div className="flex justify-end gap-x-1">
                                         <Link to={`/posts/${post.id}`}>
                                             <Button color="blue">View</Button>
                                         </Link>
 
-                                        <Link
-                                            to="#"
-                                            onClick={() => onDelete(post)}
-                                        >
-                                            <Button color="red">Delete</Button>
-                                        </Link>
-                                    </>
+                                        {/* Display delete for own post or if user is admin */}
+                                        {(user.is_admin ||
+                                            post.user_id === user.id) && (
+                                            <Link
+                                                to="#"
+                                                onClick={() => onDelete(post)}
+                                            >
+                                                <Button color="red">
+                                                    Delete
+                                                </Button>
+                                            </Link>
+                                        )}
+                                    </div>
                                 )}
                             </Card>
                         ))}
