@@ -9,6 +9,8 @@ interface Post {
     title: string;
     content: string;
     user_id: number;
+    user_name: string;
+    admin_touched: boolean;
 }
 
 const Posts: React.FC = () => {
@@ -94,8 +96,24 @@ const Posts: React.FC = () => {
                                 <p className="font-normal text-gray-700 dark:text-gray-400">
                                     {post.content.replace(/#/g, "")}
                                 </p>
+                                <em className="text-sm text-gray-500 dark:text-gray-400 text-right">
+                                    -
+                                    {post.user_id === user.id
+                                        ? " You"
+                                        : ` ${post.user_name}`}
+                                    {post.admin_touched ? (
+                                        <span>
+                                            ,{" "}
+                                            <span className="text-sky-400">
+                                                admin
+                                            </span>
+                                        </span>
+                                    ) : (
+                                        ""
+                                    )}
+                                </em>
 
-                                {token && (
+                                {token ? (
                                     <div className="flex justify-end gap-x-1">
                                         <Link to={`/posts/${post.id}`}>
                                             <Button color="blue">View</Button>
@@ -114,6 +132,13 @@ const Posts: React.FC = () => {
                                             </Link>
                                         )}
                                     </div>
+                                ) : (
+                                    <Link
+                                        to={`/guestposts/${post.id}`}
+                                        className="flex justify-end"
+                                    >
+                                        <Button color="blue">View</Button>
+                                    </Link>
                                 )}
                             </Card>
                         ))}

@@ -79,6 +79,10 @@ const router = createBrowserRouter([
                 path: "/guestposts",
                 element: <Posts />,
             },
+            {
+                path: "/guestposts/:id",
+                element: <PostForm />,
+            },
         ],
     },
 

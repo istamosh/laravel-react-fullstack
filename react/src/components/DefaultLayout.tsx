@@ -1,11 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, Navigate, Outlet } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import axiosClient from "../axios-client";
-import { DarkThemeToggle, Flowbite, Sidebar } from "flowbite-react";
-import { HiDocumentDuplicate, HiUsers, HiViewBoards } from "react-icons/hi";
+import { Button, DarkThemeToggle, Drawer, Flowbite } from "flowbite-react";
+import {
+    HiDocumentDuplicate,
+    HiMenu,
+    HiUsers,
+    HiViewBoards,
+} from "react-icons/hi";
 
 const DefaultLayout: React.FC = () => {
+    const [isOpen, setIsOpen] = useState(false);
+
     const { user, token, notification, setUser, setToken, refreshUser } =
         useStateContext();
 
@@ -39,45 +46,70 @@ const DefaultLayout: React.FC = () => {
         });
     };
 
+    const handleClose = () => {
+        setIsOpen(false);
+    };
+
     return (
         <Flowbite>
             <div id="defaultLayout">
-                <aside className="bg-gray-100 dark:bg-gray-900">
-                    <Sidebar aria-label="Default sidebar example">
-                        <Sidebar.Items>
-                            <Sidebar.ItemGroup>
-                                {user && user.is_admin ? (
-                                    <Link to="/users">
-                                        <Sidebar.Item as="div" icon={HiUsers}>
-                                            Users
-                                        </Sidebar.Item>
-                                    </Link>
-                                ) : null}
-                                <Link to="/dashboard">
-                                    <Sidebar.Item as="div" icon={HiViewBoards}>
-                                        Dashboard
-                                    </Sidebar.Item>
-                                </Link>
-                                <Link to="/posts">
-                                    <Sidebar.Item
-                                        as="div"
-                                        icon={HiDocumentDuplicate}
-                                    >
-                                        Posts
-                                    </Sidebar.Item>
-                                </Link>
-                            </Sidebar.ItemGroup>
-                        </Sidebar.Items>
-                    </Sidebar>
-                </aside>
+                {/* <aside className="bg-gray-100 dark:bg-gray-900"></aside> */}
+
+                <Drawer
+                    open={isOpen}
+                    onClose={handleClose}
+                    className="w-auto flex flex-col gap-2"
+                >
+                    {user && user.is_admin ? (
+                        <Link to="/users">
+                            <Button
+                                color="gray"
+                                className="w-full"
+                                onClick={handleClose}
+                            >
+                                <HiUsers className="self-center mr-2" />
+                                <span>Users</span>
+                            </Button>
+                        </Link>
+                    ) : null}
+                    <Link to="/dashboard">
+                        <Button
+                            color="gray"
+                            className="w-full"
+                            onClick={handleClose}
+                        >
+                            <HiViewBoards className="self-center mr-2" />
+                            <span>Dashboard</span>
+                        </Button>
+                    </Link>
+                    <Link to="/posts">
+                        <Button
+                            color="gray"
+                            className="w-full"
+                            onClick={handleClose}
+                        >
+                            <HiDocumentDuplicate className="self-center mr-2" />
+                            <span>Posts</span>
+                        </Button>
+                    </Link>
+                </Drawer>
 
                 <div className="content bg-gray-100 dark:bg-gray-900">
                     {notification && (
                         <div className="notification">{notification}</div>
                     )}
 
-                    <header className="justify-end bg-gray-100 dark:bg-gray-800">
-                        <div className="text-gray-900 dark:text-white">
+                    <header className="flex bg-gray-100 dark:bg-gray-800">
+                        <div className="grow">
+                            <Button
+                                color="gray"
+                                size="lg"
+                                onClick={() => setIsOpen(true)}
+                            >
+                                <HiMenu />
+                            </Button>
+                        </div>
+                        <div className="text-gray-900 dark:text-white items-baseline">
                             <Link
                                 to={`/users/${user.id}`}
                                 className="font-semibold hover:underline"

@@ -23,7 +23,7 @@ const PostForm: React.FC = () => {
     const [errors, setErrors] = useState(null);
     const [markdownInput, setMarkdownInput] = useState<string>("");
 
-    const { user, setNotification } = useStateContext();
+    const { user, token, setNotification } = useStateContext();
 
     const [post, setPost] = useState<Post>({
         id: null,
@@ -39,8 +39,9 @@ const PostForm: React.FC = () => {
     useEffect(() => {
         if (id) {
             setLoading(true);
+            const endpoint = token ? `/posts/${id}` : `/guestposts/${id}`;
             axiosClient
-                .get(`/posts/${id}`)
+                .get(endpoint)
                 .then(({ data }) => {
                     setLoading(false);
                     setPost(data);
@@ -50,7 +51,7 @@ const PostForm: React.FC = () => {
                     setLoading(false);
                 });
         }
-    }, [id]);
+    }, [id, token]);
 
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -156,13 +157,10 @@ const PostForm: React.FC = () => {
                                     value={markdownInput}
                                     onChange={handleInputChange}
                                 />
-                                <button>
-                                    <Button as="div" color="blue">
-                                        {post && post.id
-                                            ? "Update Post"
-                                            : "Post!"}
-                                    </Button>
-                                </button>
+
+                                <Button type="submit">
+                                    {post && post.id ? "Update Post" : "Post!"}
+                                </Button>
                             </form>
 
                             <div>
@@ -200,12 +198,14 @@ const PostForm: React.FC = () => {
                                     </span>{" "}
                                     {convertUTCToLocal(post.created_at)}
                                 </span>
-                                <span>
-                                    <span className="font-medium">
-                                        Updated At:
-                                    </span>{" "}
-                                    {convertUTCToLocal(post.updated_at)}
-                                </span>
+                                {post.created_at !== post.updated_at && (
+                                    <span>
+                                        <span className="font-medium">
+                                            Updated At:
+                                        </span>{" "}
+                                        {convertUTCToLocal(post.updated_at)}
+                                    </span>
+                                )}
                             </span>
                         </div>
                     )}

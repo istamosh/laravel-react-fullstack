@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axiosClient from "../axios-client";
 import { useStateContext } from "../contexts/ContextProvider";
+import { Button, TextInput } from "flowbite-react";
 
 interface User {
     id: number | null;
@@ -92,62 +93,73 @@ const UserForm: React.FC = () => {
 
     return (
         <>
-            {user.id ? (
-                <h1>Update User: {user.name}</h1>
+            <h3 className="text-3xl font-bold dark:text-white mb-3">
+                {loading
+                    ? "Loading..."
+                    : user.id
+                    ? `Update User: ${user.name}`
+                    : "Create New User"}
+            </h3>
+
+            {loading ? (
+                <div className="text-center">Loading...</div>
             ) : (
-                <h1>Create New User</h1>
-            )}
+                <>
+                    <div className="animated fadeInDown">
+                        {errors && (
+                            <div className="alert">
+                                {Object.keys(errors).map((key) => (
+                                    <p key={key}>{errors[key][0]}</p>
+                                ))}
+                            </div>
+                        )}
 
-            <div className="card animated fadeInDown">
-                {errors && (
-                    <div className="alert">
-                        {Object.keys(errors).map((key) => (
-                            <p key={key}>{errors[key][0]}</p>
-                        ))}
+                        <form
+                            action=""
+                            className="flex flex-col gap-4"
+                            onSubmit={onSubmit}
+                        >
+                            <TextInput
+                                type="text"
+                                onChange={(e) =>
+                                    setUser({ ...user, name: e.target.value })
+                                }
+                                value={user.name}
+                                placeholder="John Doe"
+                            />
+                            <TextInput
+                                type="email"
+                                onChange={(e) =>
+                                    setUser({ ...user, email: e.target.value })
+                                }
+                                value={user.email}
+                                placeholder="Email"
+                            />
+                            <TextInput
+                                type="password"
+                                onChange={(e) =>
+                                    setUser({
+                                        ...user,
+                                        password: e.target.value,
+                                    })
+                                }
+                                placeholder="Password"
+                            />
+                            <TextInput
+                                type="password"
+                                onChange={(e) =>
+                                    setUser({
+                                        ...user,
+                                        password_confirmation: e.target.value,
+                                    })
+                                }
+                                placeholder="Retype Password"
+                            />
+                            <Button type="submit">Save</Button>
+                        </form>
                     </div>
-                )}
-
-                {loading ? (
-                    <div className="text-center">Loading...</div>
-                ) : (
-                    <form action="" onSubmit={onSubmit}>
-                        <input
-                            type="text"
-                            onChange={(e) =>
-                                setUser({ ...user, name: e.target.value })
-                            }
-                            value={user.name}
-                            placeholder="Name"
-                        />
-                        <input
-                            type="email"
-                            onChange={(e) =>
-                                setUser({ ...user, email: e.target.value })
-                            }
-                            value={user.email}
-                            placeholder="Email"
-                        />
-                        <input
-                            type="password"
-                            onChange={(e) =>
-                                setUser({ ...user, password: e.target.value })
-                            }
-                            placeholder="Password"
-                        />
-                        <input
-                            type="password"
-                            onChange={(e) =>
-                                setUser({
-                                    ...user,
-                                    password_confirmation: e.target.value,
-                                })
-                            }
-                            placeholder="Retype Password"
-                        />
-                        <button className="btn">Save</button>
-                    </form>
-                )}
-            </div>
+                </>
+            )}
         </>
     );
 };

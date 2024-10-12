@@ -23,3 +23,4 @@ Route::post('/login', [AuthController::class, 'login']);
 
 // Expose /guestposts route
 Route::get('/guestposts', [PostController::class, 'index']);
+Route::get('/guestposts/{post}', [PostController::class, 'show']);

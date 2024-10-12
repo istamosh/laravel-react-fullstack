@@ -29,7 +29,6 @@ const Login: React.FC = () => {
         // clearing the error message first before showing another one
         setErrors(null);
 
-        console.log(payload);
         // get { data } response from AuthController
         axiosClient
             .post("/login", payload)
