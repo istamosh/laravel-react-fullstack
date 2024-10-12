@@ -1,21 +1,27 @@
+import { lazy, Suspense } from "react";
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import Login from "./views/Login";
-import Register from "./views/Register";
-import Users from "./views/Users";
-import NotFound from "./views/NotFound";
-import DefaultLayout from "./components/DefaultLayout";
-import GuestLayout from "./components/GuestLayout";
-import Dashboard from "./views/Dashboard";
-import UserForm from "./views/UserForm";
-import Posts from "./views/Posts";
-import PostForm from "./views/PostForm";
-import AdminRoute from "./components/AdminRoute";
-import UserOrAdminRoute from "./components/UserOrAdminRoute";
+
+const Login = lazy(() => import("./views/Login"));
+const Register = lazy(() => import("./views/Register"));
+const Users = lazy(() => import("./views/Users"));
+const NotFound = lazy(() => import("./views/NotFound"));
+const DefaultLayout = lazy(() => import("./components/DefaultLayout"));
+const GuestLayout = lazy(() => import("./components/GuestLayout"));
+const Dashboard = lazy(() => import("./views/Dashboard"));
+const UserForm = lazy(() => import("./views/UserForm"));
+const Posts = lazy(() => import("./views/Posts"));
+const PostForm = lazy(() => import("./views/PostForm"));
+const AdminRoute = lazy(() => import("./components/AdminRoute"));
+const UserOrAdminRoute = lazy(() => import("./components/UserOrAdminRoute"));
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <DefaultLayout />,
+        element: (
+            <Suspense fallback={<div>Loading...</div>}>
+                <DefaultLayout />
+            </Suspense>
+        ),
         children: [
             {
                 path: "/",
@@ -23,65 +29,121 @@ const router = createBrowserRouter([
             },
             {
                 path: "/dashboard",
-                element: <Dashboard />,
+                element: (
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <Dashboard />
+                    </Suspense>
+                ),
             },
             {
                 path: "/users",
-                element: <AdminRoute />,
+                element: (
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <AdminRoute />
+                    </Suspense>
+                ),
                 children: [
                     {
                         path: "",
-                        element: <Users />,
+                        element: (
+                            <Suspense fallback={<div>Loading...</div>}>
+                                <Users />
+                            </Suspense>
+                        ),
                     },
                     {
                         path: "new",
-                        element: <UserForm key="userCreate" />,
+                        element: (
+                            <Suspense fallback={<div>Loading...</div>}>
+                                <UserForm key="userCreate" />
+                            </Suspense>
+                        ),
                     },
                 ],
             },
             {
                 path: "/users/:id",
-                element: <UserOrAdminRoute />,
+                element: (
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <UserOrAdminRoute />
+                    </Suspense>
+                ),
                 children: [
                     {
                         path: "",
-                        element: <UserForm key="userUpdate" />,
+                        element: (
+                            <Suspense fallback={<div>Loading...</div>}>
+                                <UserForm key="userUpdate" />
+                            </Suspense>
+                        ),
                     },
                 ],
             },
             {
                 path: "/posts",
-                element: <Posts />,
+                element: (
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <Posts />
+                    </Suspense>
+                ),
             },
             {
                 path: "/posts/new",
-                element: <PostForm key="postCreate" />,
+                element: (
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <PostForm key="postCreate" />
+                    </Suspense>
+                ),
             },
             {
                 path: "/posts/:id",
-                element: <PostForm key="postUpdate" />,
+                element: (
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <PostForm key="postUpdate" />
+                    </Suspense>
+                ),
             },
         ],
     },
     {
         path: "/",
-        element: <GuestLayout />,
+        element: (
+            <Suspense fallback={<div>Loading...</div>}>
+                <GuestLayout />
+            </Suspense>
+        ),
         children: [
             {
                 path: "/login",
-                element: <Login />,
+                element: (
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <Login />
+                    </Suspense>
+                ),
             },
             {
                 path: "/register",
-                element: <Register />,
+                element: (
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <Register />
+                    </Suspense>
+                ),
             },
             {
                 path: "/guestposts",
-                element: <Posts />,
+                element: (
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <Posts />
+                    </Suspense>
+                ),
             },
             {
                 path: "/guestposts/:id",
-                element: <PostForm />,
+                element: (
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <PostForm />
+                    </Suspense>
+                ),
             },
         ],
     },
@@ -89,7 +151,11 @@ const router = createBrowserRouter([
     // when it's not found
     {
         path: "*",
-        element: <NotFound />,
+        element: (
+            <Suspense fallback={<div>Loading...</div>}>
+                <NotFound />
+            </Suspense>
+        ),
     },
 ]);
 
