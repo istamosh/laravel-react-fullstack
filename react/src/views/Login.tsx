@@ -51,14 +51,14 @@ const Login: React.FC = () => {
 
     return (
         <>
+            <h1 className="text-2xl font-bold dark:text-white text-center">
+                Login
+            </h1>
+
             <form
                 onSubmit={onSubmit}
-                className="flex max-w-md flex-col gap-4 mx-auto"
+                className="flex max-w-md flex-col gap-4 mx-auto animated fadeInDown"
             >
-                <h1 className="text-2xl font-bold dark:text-white text-center">
-                    Login
-                </h1>
-
                 {errors && (
                     <Alert color="failure" icon={HiInformationCircle}>
                         <div className="flex flex-col">
@@ -92,18 +92,21 @@ const Login: React.FC = () => {
                         required
                     />
                 </div>
-                <Button type="submit">Login</Button>
+                <Button type="submit" color="blue">
+                    Login
+                </Button>
+
+                <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
+                    Not registered?
+                    <Link
+                        to="/register"
+                        className="ml-1 font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+                    >
+                        Create an account
+                    </Link>
+                    .
+                </p>
             </form>
-            <p className="mt-2 text-sm text-gray-500 dark:text-gray-400 text-center">
-                Not registered?
-                <Link
-                    to="/register"
-                    className="ml-1 font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-                >
-                    Create an account
-                </Link>
-                .
-            </p>
         </>
     );
 };

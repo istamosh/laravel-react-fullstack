@@ -155,7 +155,9 @@ const UserForm: React.FC = () => {
                                 }
                                 placeholder="Retype Password"
                             />
-                            <Button type="submit">Save</Button>
+                            <Button type="submit" color="blue">
+                                Save
+                            </Button>
                         </form>
                     </div>
                 </>

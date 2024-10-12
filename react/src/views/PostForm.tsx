@@ -158,7 +158,7 @@ const PostForm: React.FC = () => {
                                     onChange={handleInputChange}
                                 />
 
-                                <Button type="submit">
+                                <Button type="submit" color="blue">
                                     {post && post.id ? "Update Post" : "Post!"}
                                 </Button>
                             </form>

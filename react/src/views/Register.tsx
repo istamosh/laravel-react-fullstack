@@ -12,13 +12,10 @@ const Register = () => {
     const passwordConfirmationRef = useRef<HTMLInputElement>();
 
     const [errors, setErrors] = useState(null);
+
     // when you press CTRL+SPACE the state context will show
     // from ContextProvider
     const { setUser, setToken } = useStateContext();
-
-    // useEffect(() => {
-    //     debugger;
-    // }, [errors]);
 
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -31,7 +28,6 @@ const Register = () => {
                 : "",
         };
 
-        console.log(payload);
         // get { data } response from AuthController
         axiosClient
             .post("/register", payload)
@@ -49,14 +45,14 @@ const Register = () => {
 
     return (
         <>
+            <h1 className="text-2xl font-bold dark:text-white text-center">
+                Register
+            </h1>
+
             <form
                 onSubmit={onSubmit}
-                className="flex max-w-md flex-col mx-auto"
+                className="flex max-w-md flex-col mx-auto animated fadeInDown"
             >
-                <h1 className="text-2xl font-bold dark:text-white text-center">
-                    Register
-                </h1>
-
                 {/* display errors */}
                 {errors && (
                     <Alert
@@ -123,18 +119,21 @@ const Register = () => {
                         required
                     />
                 </div>
-                <Button type="submit">Register</Button>
+                <Button className="mt-4" type="submit" color="blue">
+                    Register
+                </Button>
+
+                <p className="mt-2 text-sm text-gray-500 dark:text-gray-400 text-center">
+                    Already registered?
+                    <Link
+                        to="/login"
+                        className="ml-1 font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+                    >
+                        Login here
+                    </Link>
+                    .
+                </p>
             </form>
-            <p className="mt-2 text-sm text-gray-500 dark:text-gray-400 text-center">
-                Already registered?
-                <Link
-                    to="/login"
-                    className="ml-1 font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-                >
-                    Login here
-                </Link>
-                .
-            </p>
         </>
     );
 };

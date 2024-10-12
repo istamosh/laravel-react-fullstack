@@ -24,7 +24,7 @@ const GuestLayout: React.FC = () => {
                     <div className="flex md:order-2">
                         {location.pathname !== "/guestposts" && (
                             <Link to="/guestposts">
-                                <Button color="blue">Posts</Button>
+                                <Button>Posts</Button>
                             </Link>
                         )}
                         <Flowbite>
